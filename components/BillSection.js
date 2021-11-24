@@ -20,11 +20,10 @@ export default function BillSection() {
       const response = await fetch("http://localhost:8080/bill/grouped");
       const data = await response.json();
       setBills(data);
+      setLoading(false);
       console.log(data);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -52,7 +51,6 @@ export default function BillSection() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingTop: 22,
   },
   sectionHeader: {
