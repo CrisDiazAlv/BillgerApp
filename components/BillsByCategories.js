@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  ColorPropType,
   FlatList,
   StyleSheet,
   Text,
@@ -45,33 +46,79 @@ export default function BillsByCategories() {
 }
 
 function CategorySummary(props) {
-  return (
-    <View style={styles.row}>
-      <View style={styles.half}>
-        <Text style={styles.item}>{props.summary.category.name}</Text>
-        <Text style={styles.item}>{props.summary.bills.length}</Text>
-      </View>
+  const circleColor = {
+    circleColor: (color) => ({
+      backgroundColor: color,
+    }),
+  };
 
-      <View style={styles.half}>
-        <Text style={styles.item}>{props.summary.total}</Text>
+  return (
+    <View style={styles.separator}>
+      <View style={styles.container}>
+        <View style={styles.leftHalf}>
+          <View style={styles.categoryInfo}>
+            <Text style={styles.category}>{props.summary.category.name}</Text>
+            <View
+              style={StyleSheet.compose(
+                styles.circle,
+                StyleSheet.flatten([
+                  circleColor.circleColor(props.summary.category.color),
+                ])
+              )}
+            ></View>
+          </View>
+
+          <Text style={styles.amount}>
+            {props.summary.bills.length} Recibos
+          </Text>
+        </View>
+
+        <View style={styles.rightHalf}>
+          <Text style={styles.total}>{props.summary.total}€</Text>
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 22,
+  separator: {
+    borderBottomColor: "black",
+    borderBottomWidth: 0.2,
   },
-  row: {},
-
-  half: {
+  container: {
+    flexDirection: "row",
+    padding: 10,
+  },
+  rightHalf: {
+    width: "50%",
+    justifyContent: "center",
+  },
+  leftHalf: {
     width: "50%",
   },
-
-  item: {
-    padding: 10,
+  total: {
+    fontWeight: "bold",
+    textAlign: "right",
+  },
+  amount: {
+    fontSize: 12,
+  },
+  category: {
     fontSize: 18,
-    height: 44,
+
+    fontWeight: "bold",
+  },
+  categoryInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  circle: {
+    marginLeft: 10,
+    height: 10,
+    width: 10,
+    borderRadius: 15,
+    backgroundColor: "black",
   },
 });

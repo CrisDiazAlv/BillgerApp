@@ -22,18 +22,38 @@ export default function UserInfo() {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       {isLoading ? (
         <ActivityIndicator />
       ) : (
         <>
-          <Text>{user.name}</Text>
-          <Text>{user.accountNumber}</Text>
-          <Text>{user.currentBalance}</Text>
+          <Text style={styles.username}>{user.name}</Text>
+          <Text style={styles.account}>{user.accountNumber}</Text>
+          <Text style={styles.amount}>{user.currentBalance}€</Text>
         </>
       )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#0891b2",
+    padding: 12,
+  },
+  white: {
+    color: "#fff",
+  },
+  username: {
+    color: "#fff",
+    fontSize: 18,
+  },
+  account: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  amount: {
+    color: "#fff",
+    fontSize: 14,
+  },
+});
