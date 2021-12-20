@@ -11,7 +11,11 @@ export default function UserInfo() {
 
   const getUserInfo = async () => {
     try {
-      const response = await fetch("http://localhost:8080/account/4");
+      const response = await fetch("http://localhost:8080/account/4", {
+        headers: new Headers({
+          Authorization: "Basic Y3JpczEyMzpwYXNzd29yZA==",
+        }),
+      });
       const data = await response.json();
       setUser(data);
       setLoading(false);

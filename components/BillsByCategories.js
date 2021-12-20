@@ -19,7 +19,12 @@ export default function BillsByCategories() {
   const getBills = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/bill/groupedByCategory"
+        "http://localhost:8080/bill/groupedByCategory",
+        {
+          headers: new Headers({
+            Authorization: "Basic Y3JpczEyMzpwYXNzd29yZA==",
+          }),
+        }
       );
       const data = await response.json();
       setBills(data);

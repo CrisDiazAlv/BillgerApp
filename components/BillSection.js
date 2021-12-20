@@ -17,7 +17,11 @@ export default function BillSection() {
 
   const getBills = async () => {
     try {
-      const response = await fetch("http://localhost:8080/bill/groupedByDate");
+      const response = await fetch("http://localhost:8080/bill/groupedByDate", {
+        headers: new Headers({
+          Authorization: "Basic Y3JpczEyMzpwYXNzd29yZA==",
+        }),
+      });
       const data = await response.json();
       setBills(data);
       setLoading(false);
