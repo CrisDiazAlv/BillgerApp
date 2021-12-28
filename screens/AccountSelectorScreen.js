@@ -1,85 +1,85 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 
 export default function AccountSelectorScreen({ navigation }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [accounts, setAccounts] = useState(null);
-  const [hasError, setHasError] = useState(null);
+  const [accounts, setAccounts] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(null)
 
   useEffect(() => {
-    getAccounts();
-  }, []);
+    getAccounts()
+  }, [])
 
   const getAccounts = async () => {
     try {
-      const response = await fetch("http://localhost:8080/account", {
+      const response = await fetch('http://localhost:8080/account', {
         headers: new Headers({
-          Authorization: "Basic Y3JpczEyMzpwYXNzd29yZA==",
+          Authorization: 'Basic Y3JpczEyMzpwYXNzd29yZA==',
         }),
-      });
-      const data = await response.json();
-      setAccounts(data);
-      setIsLoading(false);
+      })
+      if (!response.ok) {
+        throw new Error('Not found')
+      }
+      const data = await response.json()
+      setAccounts(data)
+      setIsLoading(false)
     } catch (error) {
-      console.error(error);
-      setHasError(error);
+      console.error(error)
+      setHasError(error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  if (isLoading) return <ActivityIndicator />;
+  const getRandomColor = () => {
+    const colors = ['#2b6777', '#c8d8e4', '#f2f2f2', '#52ab98', '#f5cac2']
+    return colors[Math.floor(Math.random() * colors.length)]
+  }
+
+  if (isLoading) return <ActivityIndicator />
 
   return (
     <View style={styles.container}>
-      {accounts.map((a) => (
+      {accounts.map(a => (
         <TouchableOpacity
-          style={styles.account}
-          onPress={() => navigation.navigate("Categories")}
-        >
-          <Text style={styles.textAccount}>{a.name}</Text>
+          key={a.id}
+          style={[styles.box, { backgroundColor: getRandomColor() }]}
+          onPress={() => navigation.navigate('Categories')}>
+          <Text style={[styles.center, styles.text]}>{a.name}</Text>
+          <Text style={[styles.center, styles.text]}>{a.currentBalance} €</Text>
         </TouchableOpacity>
       ))}
-      <TouchableOpacity style={styles.newAccount}>
-        <Text style={styles.plusIcon}>+</Text>
+      <TouchableOpacity
+        style={[styles.box, { backgroundColor: '#c8d8e4' }]}
+        onPress={() => navigation.navigate('AccountForm')}>
+        <Text style={[styles.plusIcon, styles.center]}>+</Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
-  account: {
-    width: 150,
-    height: 150,
-    alignContent: "center",
-    justifyContent: "center",
-    borderColor: "black",
-    borderWidth: 1,
+  box: {
+    width: 130,
+    height: 130,
+    alignContent: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
     margin: 20,
   },
-  textAccount: {
-    textAlign: "center",
+  center: {
+    textAlign: 'center',
   },
-  newAccount: {
-    width: 150,
-    height: 150,
-    alignContent: "center",
-    justifyContent: "center",
-    borderColor: "black",
-    borderWidth: 1,
-    margin: 20,
+  text: {
+    color: 'white',
+    fontSize: 18,
   },
   plusIcon: {
     fontSize: 36,
-    textAlign: "center",
+    color: '#2b6777',
   },
-});
+})
