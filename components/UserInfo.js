@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 
 export default function UserInfo() {
-  const [isLoading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [isLoading, setLoading] = useState(true)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    getUserInfo();
-  }, []);
+    getUserInfo()
+  }, [])
 
   const getUserInfo = async () => {
     try {
-      const response = await fetch("http://localhost:8080/account/4", {
+      const response = await fetch('http://localhost:8080/account/4', {
         headers: new Headers({
-          Authorization: "Basic Y3JpczEyMzpwYXNzd29yZA==",
+          Authorization: 'Basic Y3JpczEyMzpwYXNzd29yZA==',
         }),
-      });
-      const data = await response.json();
-      setUser(data);
-      setLoading(false);
-      console.log(data);
+      })
+      const data = await response.json()
+      setUser(data)
+      setLoading(false)
+      console.log(data)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -37,27 +37,27 @@ export default function UserInfo() {
         </>
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#0891b2",
+    backgroundColor: '#0891b2',
     padding: 12,
   },
   white: {
-    color: "#fff",
+    color: '#fff',
   },
   username: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 18,
   },
   account: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
   },
   amount: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 14,
   },
-});
+})

@@ -1,61 +1,46 @@
-import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  ColorPropType,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, ColorPropType, FlatList, StyleSheet, Text, View } from 'react-native'
+
+import { get } from '../api/verbs'
 
 export default function BillsByCategories() {
-  const [isLoading, setLoading] = useState(true);
-  const [bills, setBills] = useState([]);
+  const [isLoading, setLoading] = useState(true)
+  const [bills, setBills] = useState([])
 
   useEffect(() => {
-    getBills();
-  }, []);
+    getBills()
+  }, [])
 
   const getBills = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8080/bill/groupedByCategory",
-        {
-          headers: new Headers({
-            Authorization: "Basic Y3JpczEyMzpwYXNzd29yZA==",
-          }),
-        }
-      );
-      const data = await response.json();
-      setBills(data);
-      setLoading(false);
-      console.log(data);
+      const response = await get('/bill/groupedByCategory')
+      const data = await response.json()
+      setBills(data)
+      setLoading(false)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
+
+  if (isLoading) return <ActivityIndicator />
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={bills}
-          renderItem={({ item }) => <CategorySummary summary={item} />}
-          keyExtractor={(item, index) => index}
-        />
-      )}
+      <FlatList
+        data={bills}
+        renderItem={({ item }) => <CategorySummary summary={item} />}
+        keyExtractor={(item, index) => index}
+      />
     </View>
-  );
+  )
 }
 
 function CategorySummary(props) {
   const circleColor = {
-    circleColor: (color) => ({
+    circleColor: color => ({
       backgroundColor: color,
     }),
-  };
+  }
 
   return (
     <View style={styles.separator}>
@@ -66,16 +51,11 @@ function CategorySummary(props) {
             <View
               style={StyleSheet.compose(
                 styles.circle,
-                StyleSheet.flatten([
-                  circleColor.circleColor(props.summary.category.color),
-                ])
-              )}
-            ></View>
+                StyleSheet.flatten([circleColor.circleColor(props.summary.category.color)])
+              )}></View>
           </View>
 
-          <Text style={styles.amount}>
-            {props.summary.bills.length} Recibos
-          </Text>
+          <Text style={styles.amount}>{props.summary.bills.length} Recibos</Text>
         </View>
 
         <View style={styles.rightHalf}>
@@ -83,28 +63,28 @@ function CategorySummary(props) {
         </View>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   separator: {
-    borderBottomColor: "black",
+    borderBottomColor: 'black',
     borderBottomWidth: 0.2,
   },
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 10,
   },
   rightHalf: {
-    width: "50%",
-    justifyContent: "center",
+    width: '50%',
+    justifyContent: 'center',
   },
   leftHalf: {
-    width: "50%",
+    width: '50%',
   },
   total: {
-    fontWeight: "bold",
-    textAlign: "right",
+    fontWeight: 'bold',
+    textAlign: 'right',
   },
   amount: {
     fontSize: 12,
@@ -112,11 +92,11 @@ const styles = StyleSheet.create({
   category: {
     fontSize: 18,
 
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   categoryInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
   },
   circle: {
@@ -124,6 +104,6 @@ const styles = StyleSheet.create({
     height: 10,
     width: 10,
     borderRadius: 15,
-    backgroundColor: "black",
+    backgroundColor: 'black',
   },
-});
+})

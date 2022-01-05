@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
+
+import { get } from '../api/verbs'
 
 export default function AccountSelectorScreen({ navigation }) {
-  const [accounts, setAccounts] = useState(null)
+  const [accounts, setAccounts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hasError, setHasError] = useState(null)
+  const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     getAccounts()
@@ -12,49 +14,48 @@ export default function AccountSelectorScreen({ navigation }) {
 
   const getAccounts = async () => {
     try {
-      const response = await fetch('http://localhost:8080/account', {
-        headers: new Headers({
-          Authorization: 'Basic Y3JpczEyMzpwYXNzd29yZA==',
-        }),
-      })
-      if (!response.ok) {
-        throw new Error('Not found')
-      }
+      const response = await get('/account')
+      if (!response.ok) throw new Error(response.status)
       const data = await response.json()
       setAccounts(data)
       setIsLoading(false)
     } catch (error) {
-      console.error(error)
-      setHasError(error)
+      console.error(`Could not load accounts: ${error}`)
+      if (error.message === '401') {
+        navigation.navigate('Login')
+      }
+      setHasError(true)
     } finally {
       setIsLoading(false)
     }
   }
 
   const getRandomColor = () => {
-    const colors = ['#2b6777', '#c8d8e4', '#f2f2f2', '#52ab98', '#f5cac2']
+    const colors = ['#2b6777', '#5f2c3e', '#f2f2f2', '#52ab98', '#f5cac2', '#6db785', '#ef9273', '#de5499']
     return colors[Math.floor(Math.random() * colors.length)]
   }
 
   if (isLoading) return <ActivityIndicator />
 
   return (
-    <View style={styles.container}>
-      {accounts.map(a => (
+    <ScrollView>
+      <View style={styles.container}>
+        {accounts.map(a => (
+          <TouchableOpacity
+            key={a.id}
+            style={[styles.box, { backgroundColor: getRandomColor() }]}
+            onPress={() => navigation.navigate('Categories')}>
+            <Text style={[styles.center, styles.text]}>{a.name}</Text>
+            <Text style={[styles.center, styles.text]}>{a.currentBalance} €</Text>
+          </TouchableOpacity>
+        ))}
         <TouchableOpacity
-          key={a.id}
-          style={[styles.box, { backgroundColor: getRandomColor() }]}
-          onPress={() => navigation.navigate('Categories')}>
-          <Text style={[styles.center, styles.text]}>{a.name}</Text>
-          <Text style={[styles.center, styles.text]}>{a.currentBalance} €</Text>
+          style={[styles.box, { backgroundColor: '#f0a04b' }]}
+          onPress={() => navigation.navigate('AccountForm')}>
+          <Text style={[styles.center, styles.text, { fontSize: 48 }]}>+</Text>
         </TouchableOpacity>
-      ))}
-      <TouchableOpacity
-        style={[styles.box, { backgroundColor: '#c8d8e4' }]}
-        onPress={() => navigation.navigate('AccountForm')}>
-        <Text style={[styles.plusIcon, styles.center]}>+</Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </ScrollView>
   )
 }
 
@@ -77,9 +78,8 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 18,
-  },
-  plusIcon: {
-    fontSize: 36,
-    color: '#2b6777',
+    textShadowColor: 'black',
+    textShadowRadius: 5,
+    textShadowOffset: { width: 1, height: 1 },
   },
 })
