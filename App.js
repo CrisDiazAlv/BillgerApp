@@ -14,9 +14,9 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Navigator initialRouteName="Login">
-        <Screen name="SignUp" component={SignUpScreen} options={{ title: 'Registrarse' }}></Screen>
-        <Screen name="Login" component={LoginScreen} options={{ title: 'Entrar' }}></Screen>
+      <Navigator initialRouteName="AccountSelector">
+        <Screen name="SignUp" component={SignUpScreen} options={{ title: 'Registrarse' }} />
+        <Screen name="Login" component={LoginScreen} options={{ title: 'Entrar' }} />
         <Screen name="AccountSelector" component={AccountSelectorScreen} options={{ title: 'Mis cuentas' }} />
         <Screen name="AccountForm" component={AccountFormScreen} options={{ title: 'Nueva cuenta' }} />
         <Screen name="Categories" component={CategoriesOverviewScreen} options={{ title: 'Categorías' }} />

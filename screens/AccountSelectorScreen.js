@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, ScrollView
 
 import { get } from '../api/verbs'
 
-export default function AccountSelectorScreen({ navigation }) {
+export default function AccountSelectorScreen({ navigation, route }) {
   const [accounts, setAccounts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     getAccounts()
-  }, [])
+  }, [route.params?.updateTime])
 
   const getAccounts = async () => {
     try {

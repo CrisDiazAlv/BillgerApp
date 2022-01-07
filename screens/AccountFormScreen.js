@@ -1,36 +1,62 @@
-import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, Button } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+
+import { post } from '../api/verbs'
+import TextField from '../components/form/TextField'
+import SubmitButton from '../components/form/SubmitButton'
 
 export default function AccountFormScreen({ navigation }) {
+  const nameField = useRef()
+  const initialBalanceField = useRef()
+  const accountNumberField = useRef()
+
   const [name, setName] = useState('')
   const [initialBalance, setInitialBalance] = useState('')
   const [accountNumber, setAccountNumber] = useState('')
+  const [error, setError] = useState('')
 
   const save = async () => {
+    setError('')
+    let hasErrors = false
+    if (!nameField.current.validate()) hasErrors = true
+    if (!initialBalanceField.current.validate()) hasErrors = true
+    if (!accountNumberField.current.validate()) hasErrors = true
+    if (hasErrors) return
+
     try {
-      const response = await fetch('http://localhost:8080/account', {
-        method: 'POST',
-        headers: new Headers({
-          Authorization: 'Basic Y3JpczEyMzpwYXNzd29yZA==',
-          'Content-Type': 'application/json',
-        }),
-        body: JSON.stringify({ name, initialBalance, accountNumber }),
-      })
-      if (!response.ok) {
-        throw new Error('Error Saving')
-      }
-      navigation.goBack()
+      const response = await post(
+        '/account',
+        JSON.stringify({ name, initialBalance: parseFloat(initialBalance), accountNumber })
+      )
+
+      if (!response.ok) throw new Error(response.status)
+      navigation.navigate({ name: 'AccountSelector', params: { updateTime: new Date().toISOString() } })
     } catch (error) {
-      console.error(error)
+      console.error(`Could not save account: ${error}`)
+      setError(`No se ha podido guardar la cuenta: ${error}`)
     }
   }
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.input} placeholder="Nombre" onChangeText={setName} />
-      <TextInput style={styles.input} placeholder="Balance inicial" onChangeText={setInitialBalance} />
-      <TextInput style={styles.input} placeholder="Número de cuenta" onChangeText={setAccountNumber} />
-      <Button style={styles.button} title="Guardar" onPress={save} />
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+      <TextField ref={nameField} name="Nombre" required onChange={setName} value={name} />
+      <TextField
+        ref={initialBalanceField}
+        keyboardType="numeric"
+        numeric
+        name="Balance inicial"
+        onChange={setInitialBalance}
+        value={initialBalance}
+      />
+      <TextField
+        ref={accountNumberField}
+        name="Número de cuenta"
+        onChange={setAccountNumber}
+        value={accountNumber}
+        autoCapitalize="characters"
+      />
+      <SubmitButton title="Guardar" onPress={save} />
     </View>
   )
 }
@@ -40,15 +66,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
+    width: '90%',
   },
-  input: {
-    width: 300,
-    height: 40,
-    paddingHorizontal: 5,
-    marginBottom: 5,
-    backgroundColor: 'white',
-  },
-  button: {
-    borderRadius: 10,
+  error: {
+    color: 'red',
+    marginBottom: 15,
   },
 })
