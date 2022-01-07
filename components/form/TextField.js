@@ -28,6 +28,13 @@ function TextField(props, ref) {
       setErrorMessage('')
     }
 
+    if (props.numeric && isNaN(props.value)) {
+      isValid = false
+      setErrorMessage('Este campo debe contener un valor numérico')
+    } else {
+      setErrorMessage('')
+    }
+
     return isValid
   }
 
@@ -37,7 +44,7 @@ function TextField(props, ref) {
       <TextInput
         style={styles.input}
         {...props}
-        placeholder={props.name}
+        placeholder={props.placeholder || props.name}
         value={props.value}
         onChangeText={props.onChange}
       />
@@ -49,6 +56,7 @@ function TextField(props, ref) {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 15,
+    alignSelf: 'stretch',
   },
   label: {
     marginBottom: 5,
@@ -57,24 +65,16 @@ const styles = StyleSheet.create({
   },
   input: {
     borderRadius: 100,
-    width: 200,
+    alignSelf: 'stretch',
     height: 40,
     paddingHorizontal: 10,
     backgroundColor: 'white',
     marginBottom: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
     elevation: 4,
   },
   error: {
     color: 'red',
-    marginLeft: 5,
-    maxWidth: 200,
+    marginLeft: 10,
   },
 })
 

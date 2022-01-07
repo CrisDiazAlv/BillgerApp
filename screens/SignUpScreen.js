@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { View, ScrollView, TextInput, Text, StyleSheet } from 'react-native'
 
 import { post } from '../api/verbs'
@@ -8,20 +8,31 @@ import TextField from '../components/form/TextField'
 import SubmitButton from '../components/form/SubmitButton'
 
 export default function SignUpScreen({ navigation }) {
+  const nameField = useRef()
+  const usernameField = useRef()
+  const passwordField = useRef()
+  const emailField = useRef()
+  const birthdayField = useRef()
+
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [identityDocument, setIdentityDocument] = useState('')
   const [email, setEmail] = useState('')
   const [birthday, setBirthday] = useState('')
   const [error, setError] = useState('')
 
   const signUp = async () => {
-    console.log(birthday)
+    setError('')
+    let hasErrors = false
+    if (!nameField.current.validate()) hasErrors = true
+    if (!usernameField.current.validate()) hasErrors = true
+    if (!emailField.current.validate()) hasErrors = true
+    if (!passwordField.current.validate()) hasErrors = true
+    //if (!birthdayField.current.validate()) hasErrors = true
+    if (hasErrors) return
+
     try {
-      const response = await post('/user/signup', {
-        body: JSON.stringify({ name, username, password, identityDocument, email }),
-      })
+      const response = await post('/user/signup', JSON.stringify({ name, username, password, email }))
       if (!response.ok) throw new Error(response.status)
 
       navigation.navigate('Login')
@@ -33,11 +44,28 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <TextField name="Nombre" required value={name} onChange={setName} />
-        <TextField name="Apellidos" />
-        <TextField name="Usuario" required value={username} onChange={setUsername} />
+      <Text style={styles.greeting}>¡Únete a{'\n'}Billger!</Text>
+      <View style={styles.form}>
+        <TextField ref={nameField} name="Nombre y apellidos" required value={name} onChange={setName} />
         <TextField
+          ref={usernameField}
+          name="Usuario"
+          required
+          autoCapitalize="none"
+          value={username}
+          onChange={setUsername}
+        />
+        <TextField
+          ref={emailField}
+          name="Email"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          required
+          value={email}
+          onChange={setEmail}
+        />
+        <TextField
+          ref={passwordField}
           name="Contraseña"
           autoCapitalize="none"
           secureTextEntry
@@ -46,9 +74,8 @@ export default function SignUpScreen({ navigation }) {
           value={password}
           onChange={setPassword}
         />
-        <TextField name="Email" autoCapitalize="none" keyboardType="email-address" required onChange={setEmail} />
+
         {/* <DateTimeField name="Fecha de nacimiento" required value={birthday} onChange={setBirthday} /> */}
-        <TextField name="DNI" required keyboardType="phone-pad" onChange={setIdentityDocument} />
 
         {error ? <Text style={styles.error}>{error}</Text> : null}
         <SubmitButton title="Registrarse" onPress={signUp} />
@@ -61,11 +88,26 @@ export default function SignUpScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  form: {
     flex: 1,
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 50,
+    width: '90%',
+    marginVertical: 50,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 15,
+  },
+  greeting: {
+    marginLeft: 20,
+    marginTop: 20,
+    fontSize: 32,
+    lineHeight: 50,
+    color: '#282612',
+    textDecorationLine: 'underline',
+    textDecorationColor: '#3f5efb',
   },
   login: {
     marginTop: 15,

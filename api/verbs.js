@@ -9,7 +9,6 @@ export const get = async path => {
 
   const response = await fetch(`${API_URL}/${sanitizePath(path)}`, {
     headers: new Headers({
-      Authorization: `Basic ${credentials}`,
       credentials: 'include',
     }),
   })
@@ -22,7 +21,7 @@ export const post = async (path, body) => {
   })
 
   const credentials = await getCredentials()
-  if (credentials) headers.append({ Authorization: `Basic ${credentials}` })
+  if (credentials) headers.append('Authorization', `Basic ${credentials}`)
 
   const response = await fetch(`${API_URL}/${sanitizePath(path)}`, {
     method: 'POST',

@@ -5,7 +5,7 @@ export default function SubmitButton({ title, onPress }) {
   const [offset] = useState(new Animated.Value(1))
   const [scale] = useState(new Animated.Value(1))
 
-  const handlePress = async () => {
+  const animate = async () => {
     Animated.spring(offset, {
       toValue: 5,
       useNativeDriver: true,
@@ -29,7 +29,7 @@ export default function SubmitButton({ title, onPress }) {
   const transform = [{ translateY: offset }, { scaleY: scale }, { scaleX: scale }]
 
   return (
-    <TouchableWithoutFeedback onPressIn={handlePress}>
+    <TouchableWithoutFeedback onPressIn={animate}>
       <Animated.View style={{ transform, ...styles.container }}>
         <Text style={styles.text}>{title}</Text>
       </Animated.View>
@@ -40,19 +40,13 @@ export default function SubmitButton({ title, onPress }) {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
+    alignSelf: 'center',
     alignItems: 'center',
     height: 40,
-    width: 100,
     borderRadius: 100,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
     backgroundColor: '#3f5efb',
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
     elevation: 4,
+    paddingHorizontal: 20,
   },
   text: {
     color: 'white',
