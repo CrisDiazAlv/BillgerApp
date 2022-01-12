@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 
 import { login } from '../api/verbs'
 
-import TextField from '../components/form/TextField'
-import SubmitButton from '../components/form/SubmitButton'
+import { Form, TextField, SubmitButton } from '../components/form'
 
 export default function LoginScreen({ navigation }) {
   const usernameField = useRef()
@@ -36,8 +35,7 @@ export default function LoginScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+    <Form style={{ width: '90%' }} error={error}>
       <TextField
         ref={usernameField}
         name="Usuario"
@@ -61,22 +59,11 @@ export default function LoginScreen({ navigation }) {
       <Text style={styles.signup} onPress={() => navigation.navigate('SignUp')}>
         ¿No tienes una cuenta? Regístrate
       </Text>
-    </View>
+    </Form>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: '90%',
-  },
-  error: {
-    color: 'red',
-    marginBottom: 15,
-  },
   signup: {
     marginTop: 15,
     color: '#3f5efb',

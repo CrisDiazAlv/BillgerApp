@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react'
-import { View, ScrollView, TextInput, Text, StyleSheet } from 'react-native'
+import { ScrollView, TextInput, Text, StyleSheet } from 'react-native'
 
 import { post } from '../api/verbs'
 
-import TextField from '../components/form/TextField'
+import { Form, TextField, SubmitButton } from '../components/form'
 // import DateTimeField from '../components/form/DateTimeField'
-import SubmitButton from '../components/form/SubmitButton'
 
 export default function SignUpScreen({ navigation }) {
   const nameField = useRef()
@@ -45,7 +44,7 @@ export default function SignUpScreen({ navigation }) {
   return (
     <ScrollView>
       <Text style={styles.greeting}>¡Únete a{'\n'}Billger!</Text>
-      <View style={styles.form}>
+      <Form style={{ width: '90%', marginVertical: 50 }} error={error}>
         <TextField ref={nameField} name="Nombre y apellidos" required value={name} onChange={setName} />
         <TextField
           ref={usernameField}
@@ -77,29 +76,16 @@ export default function SignUpScreen({ navigation }) {
 
         {/* <DateTimeField name="Fecha de nacimiento" required value={birthday} onChange={setBirthday} /> */}
 
-        {error ? <Text style={styles.error}>{error}</Text> : null}
         <SubmitButton title="Registrarse" onPress={signUp} />
         <Text style={styles.login} onPress={() => navigation.navigate('Login')}>
           ¿Ya tienes una cuenta? Inicia sesión
         </Text>
-      </View>
+      </Form>
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
-  form: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '90%',
-    marginVertical: 50,
-  },
-  error: {
-    color: 'red',
-    marginBottom: 15,
-  },
   greeting: {
     marginLeft: 20,
     marginTop: 20,
