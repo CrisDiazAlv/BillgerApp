@@ -16,6 +16,7 @@ export default function AccountSelectorScreen({ navigation, route }) {
     try {
       const response = await get('/account')
       if (!response.ok) throw new Error(response.status)
+
       const data = await response.json()
       setAccounts(data)
       setIsLoading(false)
@@ -31,7 +32,7 @@ export default function AccountSelectorScreen({ navigation, route }) {
   }
 
   const getRandomColor = () => {
-    const colors = ['#2b6777', '#5f2c3e', '#f2f2f2', '#52ab98', '#f5cac2', '#6db785', '#ef9273', '#de5499']
+    const colors = ['#2b6777', '#5f2c3e', /*'#f2f2f2',*/ '#52ab98', /*'#f5cac2',*/ '#6db785', '#ef9273', '#de5499']
     return colors[Math.floor(Math.random() * colors.length)]
   }
 
@@ -65,12 +66,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   box: {
-    width: 130,
-    height: 130,
+    width: '40%',
+    margin: '5%',
+    paddingVertical: 50,
     alignContent: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    margin: 20,
   },
   center: {
     textAlign: 'center',
