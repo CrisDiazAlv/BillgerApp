@@ -1,13 +1,13 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import UserInfo from '../components/UserInfo'
+import AccountInfo from '../components/AccountInfo'
 import BillsByCategories from '../components/BillsByCategories'
 
-export default function CategoriesOverviewScreen({ route }) {
+export default function AccountOverviewScreen({ route }) {
   return (
     <View>
-      <UserInfo />
+      <AccountInfo />
       <BillsByCategories category={route.categoryId} />
     </View>
   )

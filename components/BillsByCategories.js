@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, ColorPropType, FlatList, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
 
 import { get } from '../api/verbs'
 
@@ -25,7 +25,7 @@ export default function BillsByCategories() {
   if (isLoading) return <ActivityIndicator />
 
   return (
-    <View style={styles.container}>
+    <View style={{ padding: 20 }}>
       <FlatList
         data={bills}
         renderItem={({ item }) => <CategorySummary summary={item} />}
@@ -36,44 +36,31 @@ export default function BillsByCategories() {
 }
 
 function CategorySummary(props) {
-  const circleColor = {
-    circleColor: color => ({
-      backgroundColor: color,
-    }),
-  }
+  const backgroundColor = { backgroundColor: props.summary.category.color }
 
   return (
-    <View style={styles.separator}>
-      <View style={styles.container}>
-        <View style={styles.leftHalf}>
-          <View style={styles.categoryInfo}>
-            <Text style={styles.category}>{props.summary.category.name}</Text>
-            <View
-              style={StyleSheet.compose(
-                styles.circle,
-                StyleSheet.flatten([circleColor.circleColor(props.summary.category.color)])
-              )}></View>
-          </View>
-
-          <Text style={styles.amount}>{props.summary.bills.length} Recibos</Text>
+    <View style={styles.row}>
+      <View style={styles.leftHalf}>
+        <View style={styles.categoryInfo}>
+          <Text style={styles.category}>{props.summary.category.name}</Text>
+          <View style={[styles.circle, backgroundColor]}></View>
         </View>
-
-        <View style={styles.rightHalf}>
-          <Text style={styles.total}>{props.summary.total}€</Text>
-        </View>
+        <Text style={styles.amount}>{props.summary.bills.length} Recibos</Text>
+      </View>
+      <View style={styles.rightHalf}>
+        <Text style={styles.total}>{props.summary.total}€</Text>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  separator: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 0.2,
-  },
-  container: {
+  row: {
+    marginVertical: 5,
     flexDirection: 'row',
-    padding: 10,
+    paddingVertical: 10,
+    borderBottomColor: '#3f5efb',
+    borderBottomWidth: 1,
   },
   rightHalf: {
     width: '50%',
@@ -91,7 +78,6 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 18,
-
     fontWeight: 'bold',
   },
   categoryInfo: {
