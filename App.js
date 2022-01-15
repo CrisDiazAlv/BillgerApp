@@ -6,6 +6,7 @@ import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import SignUpScreen from './screens/SignUpScreen'
 import AccountFormScreen from './screens/AccountFormScreen'
+import CategoryFormScreen from './screens/CategoryFormScreen'
 import AccountSelectorScreen from './screens/AccountSelectorScreen'
 import AccountOverviewScreen from './screens/AccountOverviewScreen'
 
@@ -24,6 +25,7 @@ export default function App() {
           component={AccountOverviewScreen}
           options={({ route }) => ({ title: route.params.name })}
         />
+        <Screen name="CategoryForm" component={CategoryFormScreen} options={{ title: 'Nueva categoría' }} />
       </Navigator>
     </NavigationContainer>
   )
