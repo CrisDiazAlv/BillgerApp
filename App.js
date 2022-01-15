@@ -19,7 +19,11 @@ export default function App() {
         <Screen name="Login" component={LoginScreen} options={{ title: 'Entrar' }} />
         <Screen name="AccountSelector" component={AccountSelectorScreen} options={{ title: 'Mis cuentas' }} />
         <Screen name="AccountForm" component={AccountFormScreen} options={{ title: 'Nueva cuenta' }} />
-        <Screen name="Categories" component={AccountOverviewScreen} options={{ title: 'Categorías' }} />
+        <Screen
+          name="AccountOverview"
+          component={AccountOverviewScreen}
+          options={({ route }) => ({ title: route.params.name })}
+        />
       </Navigator>
     </NavigationContainer>
   )

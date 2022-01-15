@@ -14,11 +14,16 @@ export default function BillsByCategories() {
   const getBills = async () => {
     try {
       const response = await get('/bill/groupedByCategory')
+      if (!response.ok) throw new Error(response.status)
+
       const data = await response.json()
       setBills(data)
       setLoading(false)
     } catch (error) {
-      console.error(error)
+      console.error(`Could not load bills: ${error}`)
+      setHasError(true)
+    } finally {
+      setLoading(false)
     }
   }
 

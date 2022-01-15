@@ -45,7 +45,7 @@ export default function AccountSelectorScreen({ navigation, route }) {
           <TouchableOpacity
             key={a.id}
             style={[styles.box, { backgroundColor: getRandomColor() }]}
-            onPress={() => navigation.navigate('Categories')}>
+            onPress={() => navigation.navigate('AccountOverview', { name: a.name, account: a.id })}>
             <Text style={[styles.center, styles.text]}>{a.name}</Text>
             <Text style={[styles.center, styles.text]}>{a.currentBalance} €</Text>
           </TouchableOpacity>

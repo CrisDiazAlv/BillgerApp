@@ -20,15 +20,14 @@ export default function AccountFormScreen({ navigation }) {
     if (hasErrors) return
 
     try {
-      const response = await post(
-        '/account',
-        JSON.stringify({ name, initialBalance: parseFloat(initialBalance), accountNumber })
-      )
-
+      const body = JSON.stringify({ name, initialBalance: parseFloat(initialBalance), accountNumber })
+      const response = await post('/account', body)
       if (!response.ok) throw new Error(response.status)
+
       navigation.navigate({ name: 'AccountSelector', params: { updateTime: new Date().toISOString() } })
     } catch (error) {
       console.error(`Could not save account: ${error}`)
+      if (error.message === '401') navigation.navigate('Login')
       setError(`No se ha podido guardar la cuenta: ${error}`)
     }
   }

@@ -1,23 +1,20 @@
 import React, { useRef, useState } from 'react'
-import { ScrollView, TextInput, Text, StyleSheet } from 'react-native'
+import { ScrollView, Text, StyleSheet } from 'react-native'
 
 import { post } from '../api/verbs'
 
 import { Form, TextField, SubmitButton } from '../components/form'
-// import DateTimeField from '../components/form/DateTimeField'
 
 export default function SignUpScreen({ navigation }) {
   const nameField = useRef()
   const usernameField = useRef()
   const passwordField = useRef()
   const emailField = useRef()
-  const birthdayField = useRef()
 
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-  const [birthday, setBirthday] = useState('')
   const [error, setError] = useState('')
 
   const signUp = async () => {
@@ -27,7 +24,7 @@ export default function SignUpScreen({ navigation }) {
     if (!usernameField.current.validate()) hasErrors = true
     if (!emailField.current.validate()) hasErrors = true
     if (!passwordField.current.validate()) hasErrors = true
-    //if (!birthdayField.current.validate()) hasErrors = true
+
     if (hasErrors) return
 
     try {
@@ -37,7 +34,7 @@ export default function SignUpScreen({ navigation }) {
       navigation.navigate('Login')
     } catch (error) {
       console.error(error)
-      setError(error)
+      setError(`No se ha podido completar el registro: ${error}`)
     }
   }
 

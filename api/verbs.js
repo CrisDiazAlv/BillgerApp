@@ -12,6 +12,9 @@ export const get = async path => {
       credentials: 'include',
     }),
   })
+
+  if (response.status === '401') await logout()
+
   return response
 }
 
@@ -29,6 +32,8 @@ export const post = async (path, body) => {
     body,
   })
 
+  if (response.status === '401') await logout()
+
   return response
 }
 
@@ -41,7 +46,12 @@ export const login = async (username, password) => {
       Authorization: `Basic ${credentials}`,
     }),
   })
+
   return response
+}
+
+export const logout = async () => {
+  await setCredentials(null)
 }
 
 const sanitizePath = path => {
@@ -52,5 +62,6 @@ const sanitizePath = path => {
   if (path.charAt(0) === '/') {
     path = path.substring(1)
   }
+
   return path
 }

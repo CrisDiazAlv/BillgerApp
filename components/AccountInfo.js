@@ -1,9 +1,10 @@
+import { NavigationContainer } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 
 import { get } from '../api/verbs'
 
-export default function AccountInfo() {
+export default function AccountInfo({ id, navigation }) {
   const [account, setAccount] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -13,7 +14,7 @@ export default function AccountInfo() {
 
   const getUserInfo = async () => {
     try {
-      const response = await get('/account/4')
+      const response = await get(`/account/${id}`)
       if (!response.ok) throw new Error(response.status)
 
       const data = await response.json()
@@ -21,6 +22,7 @@ export default function AccountInfo() {
       setIsLoading(false)
     } catch (error) {
       console.error(`Could not load account: ${error}`)
+      if (error.message === '401') navigation.navigate('Login')
     } finally {
       setIsLoading(false)
     }
