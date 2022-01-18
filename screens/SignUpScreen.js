@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react'
 import { ScrollView, Text, StyleSheet } from 'react-native'
 
 import { post } from '../api/verbs'
-
 import { Form, TextField, SubmitButton } from '../components/form'
 
 export default function SignUpScreen({ navigation }) {
@@ -24,7 +23,6 @@ export default function SignUpScreen({ navigation }) {
     if (!usernameField.current.validate()) hasErrors = true
     if (!emailField.current.validate()) hasErrors = true
     if (!passwordField.current.validate()) hasErrors = true
-
     if (hasErrors) return
 
     try {
@@ -70,8 +68,6 @@ export default function SignUpScreen({ navigation }) {
           value={password}
           onChange={setPassword}
         />
-
-        {/* <DateTimeField name="Fecha de nacimiento" required value={birthday} onChange={setBirthday} /> */}
 
         <SubmitButton title="Registrarse" onPress={signUp} />
         <Text style={styles.login} onPress={() => navigation.navigate('Login')}>
