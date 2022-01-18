@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-import AccountInfo from '../components/AccountInfo'
+import AccountInfo from '../components/account/AccountInfo'
 import FloatingButton from '../components/ui/FloatingButton'
 import BillsByCategories from '../components/BillsByCategories'
 

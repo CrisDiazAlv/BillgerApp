@@ -1,8 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 
-import { get } from '../api/verbs'
+import { get } from '../../api/verbs'
 
 export default function AccountInfo({ id, navigation }) {
   const [account, setAccount] = useState(null)
