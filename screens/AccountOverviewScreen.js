@@ -10,7 +10,8 @@ export default function AccountOverviewScreen({ navigation, route }) {
     <View style={styles.container}>
       <AccountInfo id={route.params.account} navigation={navigation} />
       <BillsByCategories account={route.account} />
-      <FloatingButton onPress={() => navigation.navigate('CategoryForm')}>
+      {/* <FloatingButton onPress={() => navigation.navigate('CategoryForm')}> */}
+      <FloatingButton onPress={() => navigation.navigate('BillForm', { account: route.params.account })}>
         <Text style={styles.text}>+</Text>
       </FloatingButton>
     </View>

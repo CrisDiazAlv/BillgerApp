@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import LoginScreen from './screens/LoginScreen'
 import SignUpScreen from './screens/SignUpScreen'
+import BillFormScreen from './screens/BillFormScreen'
 import AccountFormScreen from './screens/AccountFormScreen'
 import CategoryFormScreen from './screens/CategoryFormScreen'
 import AccountSelectorScreen from './screens/AccountSelectorScreen'
@@ -14,7 +15,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Navigator initialRouteName="Login">
+      <Navigator initialRouteName="AccountSelector">
         <Screen name="SignUp" component={SignUpScreen} options={{ title: 'Registrarse' }} />
         <Screen name="Login" component={LoginScreen} options={{ title: 'Entrar' }} />
         <Screen name="AccountSelector" component={AccountSelectorScreen} options={{ title: 'Mis cuentas' }} />
@@ -24,6 +25,7 @@ export default function App() {
           component={AccountOverviewScreen}
           options={({ route }) => ({ title: route.params.name })}
         />
+        <Screen name="BillForm" component={BillFormScreen} options={{ title: 'Nuevo recibo' }} />
         <Screen name="CategoryForm" component={CategoryFormScreen} options={{ title: 'Nueva categoría' }} />
       </Navigator>
     </NavigationContainer>
