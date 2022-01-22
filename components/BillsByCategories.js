@@ -22,8 +22,6 @@ export default function BillsByCategories() {
     } catch (error) {
       console.error(`Could not load bills: ${error}`)
       setHasError(true)
-    } finally {
-      setLoading(false)
     }
   }
 

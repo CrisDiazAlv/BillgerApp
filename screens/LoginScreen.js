@@ -23,7 +23,7 @@ export default function LoginScreen({ navigation }) {
       const response = await login(username, password)
       if (!response.ok) throw new Error(response.status)
 
-      navigation.navigate('AccountSelector')
+      navigation.navigate({ name: 'AccountSelector', params: { updateTime: new Date().toISOString() } })
     } catch (error) {
       console.error(error)
       if (error.message === '401') {

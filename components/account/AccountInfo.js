@@ -22,8 +22,6 @@ export default function AccountInfo({ id, navigation }) {
     } catch (error) {
       console.error(`Could not load account: ${error}`)
       if (error.message === '401') navigation.navigate('Login')
-    } finally {
-      setIsLoading(false)
     }
   }
 
