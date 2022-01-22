@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 
-import { get } from '../api/verbs'
-import ColoredBox from '../components/ui/ColoredBox'
+import { get, deleteById } from '../api/verbs'
+
+import AddButton from '../components/account/AddButton'
 import AccountBox from '../components/account/AccountBox'
+import DeleteModal from '../components/account/DeleteModal'
 
 export default function AccountSelectorScreen({ navigation, route }) {
   const [accounts, setAccounts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [accountId, setAccountId] = useState()
 
   useEffect(() => {
     getAccounts()
@@ -31,6 +35,20 @@ export default function AccountSelectorScreen({ navigation, route }) {
     }
   }
 
+  const deleteAccount = async id => {
+    try {
+      const response = await deleteById(`/account/${id}`)
+      if (!response.ok) throw new Error(response.status)
+
+      setIsLoading(false)
+    } catch (error) {
+      console.error(`Could not delete account: ${error}`)
+      if (error.message === '401') navigation.navigate('Login')
+      setHasError(true)
+    }
+    setModalVisible(false)
+  }
+
   if (isLoading) return <ActivityIndicator />
 
   return (
@@ -45,13 +63,16 @@ export default function AccountSelectorScreen({ navigation, route }) {
               name={name}
               currentBalance={currentBalance}
               onPress={() => navigation.navigate('AccountOverview', { name, account: id })}
-              onLongPress={() => console.log('long presss')}
+              onLongPress={() => {
+                setAccountId(id)
+                setModalVisible(true)
+              }}
             />
           )
         })}
-        <ColoredBox color="#3f5efb" style={styles.box} onPress={() => navigation.navigate('AccountForm')}>
-          <Text style={[styles.text, { fontSize: 48 }]}>+</Text>
-        </ColoredBox>
+
+        <AddButton onPress={() => navigation.navigate('AccountForm')} />
+        <DeleteModal modalVisible={modalVisible} onConfirm={() => deleteAccount(accountId)} />
       </View>
     </ScrollView>
   )
@@ -68,13 +89,5 @@ const styles = StyleSheet.create({
     paddingVertical: 50,
     elevation: 5,
     borderRadius: 10,
-  },
-  text: {
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 18,
-    textShadowColor: 'black',
-    textShadowRadius: 5,
-    textShadowOffset: { width: 1, height: 1 },
   },
 })

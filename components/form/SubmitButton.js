@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TouchableWithoutFeedback, View, Text, StyleSheet, Animated } from 'react-native'
+import { TouchableWithoutFeedback, Text, StyleSheet, Animated } from 'react-native'
 
 export default function SubmitButton({ title, onPress }) {
   const [offset] = useState(new Animated.Value(1))

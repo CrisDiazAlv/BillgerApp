@@ -37,6 +37,22 @@ export const post = async (path, body) => {
   return response
 }
 
+export const deleteById = async path => {
+  const credentials = await getCredentials()
+  if (!credentials) throw new Error('Credentials not found')
+
+  const response = await fetch(`${API_URL}/${sanitizePath(path)}`, {
+    method: 'DELETE',
+    headers: new Headers({
+      credentials: 'include',
+    }),
+  })
+
+  if (response.status === '401') await logout()
+
+  return response
+}
+
 export const login = async (username, password) => {
   const credentials = btoa(username + ':' + password)
   await setCredentials(credentials)
