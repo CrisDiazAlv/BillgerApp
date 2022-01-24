@@ -1,9 +1,9 @@
 import React from 'react'
 import { Modal as ReactNativeModal, View, StyleSheet } from 'react-native'
 
-export default function Modal({ modalVisible, onCancel, children }) {
+export default function Modal({ visible, onCancel, children }) {
   return (
-    <ReactNativeModal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={onCancel}>
+    <ReactNativeModal animationType="slide" transparent={true} visible={visible} onRequestClose={onCancel}>
       <View style={styles.modal}>{children}</View>
     </ReactNativeModal>
   )

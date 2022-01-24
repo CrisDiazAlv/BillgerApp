@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 
 import Modal from '../ui/Modal'
 
-export default function DeleteModal({ modalVisible, onConfirm }) {
-  const [visible, setVisible] = useState(modalVisible)
-
-  useEffect(() => {
-    setVisible(modalVisible)
-  }, [modalVisible])
-
+export default function DeleteModal({ visible, onCancel, onConfirm }) {
   return (
-    <Modal modalVisible={visible} onConfirm={onConfirm} onCancel={() => setVisible(false)}>
+    <Modal visible={visible} onConfirm={onConfirm} onCancel={onCancel}>
       <View style={styles.modalView}>
         <Text style={styles.text}>Está a punto de eliminar la cuenta, ¿está seguro?</Text>
         <View style={{ width: '80%', flexDirection: 'row', alignContent: 'flex-end' }}>
@@ -21,7 +15,7 @@ export default function DeleteModal({ modalVisible, onConfirm }) {
             </View>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback onPress={() => setVisible(false)}>
+          <TouchableWithoutFeedback onPress={onCancel}>
             <View style={[styles.button, styles.cancel]}>
               <Text style={styles.confirmation}>Cancelar</Text>
             </View>

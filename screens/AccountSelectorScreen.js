@@ -10,7 +10,6 @@ import DeleteModal from '../components/account/DeleteModal'
 export default function AccountSelectorScreen({ navigation, route }) {
   const [accounts, setAccounts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hasError, setHasError] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [accountId, setAccountId] = useState()
 
@@ -29,9 +28,6 @@ export default function AccountSelectorScreen({ navigation, route }) {
     } catch (error) {
       console.error(`Could not load accounts: ${error}`)
       if (error.message === '401') navigation.navigate('Login')
-      setHasError(true)
-    } finally {
-      setIsLoading(false)
     }
   }
 
@@ -40,13 +36,13 @@ export default function AccountSelectorScreen({ navigation, route }) {
       const response = await deleteById(`/account/${id}`)
       if (!response.ok) throw new Error(response.status)
 
-      setIsLoading(false)
+      setAccounts(accounts.filter(a => a.id !== id))
     } catch (error) {
       console.error(`Could not delete account: ${error}`)
       if (error.message === '401') navigation.navigate('Login')
-      setHasError(true)
+    } finally {
+      setModalVisible(false)
     }
-    setModalVisible(false)
   }
 
   if (isLoading) return <ActivityIndicator />
@@ -72,7 +68,11 @@ export default function AccountSelectorScreen({ navigation, route }) {
         })}
 
         <AddButton onPress={() => navigation.navigate('AccountForm')} />
-        <DeleteModal modalVisible={modalVisible} onConfirm={() => deleteAccount(accountId)} />
+        <DeleteModal
+          visible={modalVisible}
+          onCancel={() => setModalVisible(false)}
+          onConfirm={() => deleteAccount(accountId)}
+        />
       </View>
     </ScrollView>
   )
