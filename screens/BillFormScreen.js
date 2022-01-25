@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native'
 
 import { post } from '../api/verbs'
 
-import { Form, TextField, DateTimeField, SubmitButton } from '../components/form'
+import { Form, TextField, DateTimeField, CategoryPicker, Checkbox, SubmitButton } from '../components/form'
 
 export default function BillFormScreen({ navigation, route }) {
   const amountField = useRef()
@@ -12,9 +12,10 @@ export default function BillFormScreen({ navigation, route }) {
 
   const [amount, setAmount] = useState('')
   const [date, setDate] = useState('')
+  const [paid, setPaid] = useState(true)
   const [description, setDescription] = useState('')
   const [notes, setNotes] = useState('')
-
+  const [category, setCategory] = useState('')
   const [error, setError] = useState('')
 
   const save = async () => {
@@ -32,17 +33,17 @@ export default function BillFormScreen({ navigation, route }) {
         description,
         notes,
         account: route.params.account,
+        paid,
         category: 3,
       })
-
       const response = await post('/bill', body)
       if (!response.ok) throw new Error(response.status)
 
       navigation.goBack()
     } catch (error) {
-      console.error(error)
+      console.error(`Could not save category: ${error}`)
       if (error.message === '401') navigation.navigate('Login')
-      setError(`No se ha podido crear el recibo: ${error}`)
+      setError(`No se ha podido guardar el recibo: ${error}`)
     }
   }
 
@@ -62,6 +63,8 @@ export default function BillFormScreen({ navigation, route }) {
         <DateTimeField ref={dateField} name="Fecha" required value={date} onChange={setDate} />
         <TextField ref={descriptionField} name="Concepto" required value={description} onChange={setDescription} />
         <TextField name="Notas" value={notes} onChange={setNotes} />
+        <CategoryPicker name="Categoria" value={category} onChange={setCategory} />
+        <Checkbox name="Pagado" value={paid} onChange={setPaid} />
         <SubmitButton title="Guardar" onPress={save} />
       </Form>
     </ScrollView>
