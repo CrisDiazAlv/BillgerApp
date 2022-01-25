@@ -8,7 +8,7 @@ export default function DeleteModal({ visible, onCancel, onConfirm }) {
     <Modal visible={visible} onConfirm={onConfirm} onCancel={onCancel}>
       <View style={styles.modalView}>
         <Text style={styles.text}>Está a punto de eliminar la cuenta, ¿está seguro?</Text>
-        <View style={{ width: '80%', flexDirection: 'row', alignContent: 'flex-end' }}>
+        <View style={styles.buttons}>
           <TouchableWithoutFeedback onPress={onConfirm}>
             <View style={[styles.button, styles.confirm]}>
               <Text style={styles.confirmation}>Confirmar</Text>
@@ -38,7 +38,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   text: {
-    marginBottom: 10,
+    marginBottom: 20,
+    fontSize: 16,
+  },
+  buttons: {
+    width: '90%',
+    flexDirection: 'row',
+    alignContent: 'flex-end',
   },
   button: {
     justifyContent: 'center',
@@ -46,6 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 40,
     borderRadius: 100,
+    width: '45%',
     elevation: 4,
     paddingHorizontal: 20,
   },

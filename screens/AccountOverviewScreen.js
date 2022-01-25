@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { View, StyleSheet, LogBox } from 'react-native'
 
+// workaround to "componentWillReceiveProps has been renamed" warning
+// https://github.com/mastermoo/react-native-action-button/issues/365
 import ActionButton from 'react-native-action-button'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -9,7 +11,7 @@ import BillsByCategories from '../components/BillsByCategories'
 
 export default function AccountOverviewScreen({ navigation, route }) {
   // workaround to hide "Animated: useNativeDriver was not specified" warning
-  //github.com/mastermoo/react-native-action-button/issues/339
+  // https://github.com/mastermoo/react-native-action-button/issues/339
   useEffect(() => {
     LogBox.ignoreLogs(['Animated: `useNativeDriver`'])
   }, [])

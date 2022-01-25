@@ -39,7 +39,7 @@ export default function AccountInfo({ id, navigation }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#3f5efb',
-    padding: 12,
+    padding: 20,
   },
   white: {
     color: '#fff',
