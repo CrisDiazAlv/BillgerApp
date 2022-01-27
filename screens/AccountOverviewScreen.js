@@ -31,7 +31,7 @@ export default function AccountOverviewScreen({ navigation, route }) {
           buttonColor="#3498db"
           title="Nueva categoría"
           onPress={() => navigation.navigate('CategoryForm')}>
-          <Ionicons name="md-notifications-off" style={styles.actionButtonIcon} />
+          <Ionicons name="md-pricetag" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       </ActionButton>
     </View>
