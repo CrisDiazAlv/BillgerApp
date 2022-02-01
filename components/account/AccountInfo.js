@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 
+import { useNavigation } from '@react-navigation/native'
+
 import { get } from '../../api/verbs'
 
-export default function AccountInfo({ id, navigation }) {
+export default function AccountInfo({ id }) {
   const [account, setAccount] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const navigation = useNavigation()
 
   useEffect(() => {
     getUserInfo()
@@ -29,9 +33,9 @@ export default function AccountInfo({ id, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.username}>{account.name}</Text>
-      <Text style={styles.account}>{account.accountNumber}</Text>
-      <Text style={styles.amount}>{account.currentBalance}€</Text>
+      <Text style={[styles.username, styles.text]}>{account.name}</Text>
+      <Text style={[styles.account, styles.text]}>{account.accountNumber}</Text>
+      <Text style={[styles.amount, styles.text]}>{account.currentBalance}€</Text>
     </View>
   )
 }
@@ -41,20 +45,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#3f5efb',
     padding: 20,
   },
-  white: {
+  text: {
     color: '#fff',
+    marginBottom: 5,
   },
   username: {
-    color: '#fff',
     fontSize: 24,
   },
   account: {
-    color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
   },
   amount: {
-    color: '#fff',
     fontSize: 18,
   },
 })

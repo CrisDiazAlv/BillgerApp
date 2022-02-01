@@ -5,7 +5,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 
 import { get } from '../api/verbs'
 
-export default function BillsByCategories() {
+export default function BillsByCategories({ account }) {
   const [isLoading, setLoading] = useState(true)
   const [bills, setBills] = useState([])
 
@@ -17,7 +17,7 @@ export default function BillsByCategories() {
 
   const getBills = async () => {
     try {
-      const response = await get('/bill/group/category')
+      const response = await get(`/bill/group/category?account=${account}`)
       if (!response.ok) throw new Error(response.status)
 
       const data = await response.json()

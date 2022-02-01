@@ -18,8 +18,8 @@ export default function AccountOverviewScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <AccountInfo id={route.params.account} navigation={navigation} />
-      <BillsByCategories account={route.account} />
+      <AccountInfo id={route.params.account} />
+      <BillsByCategories account={route.params.account} />
       <ActionButton buttonColor="#3f5efb" size={65} offsetY={40} offsetX={40} buttonTextStyle={styles.text}>
         <ActionButton.Item
           buttonColor="#9b59b6"
