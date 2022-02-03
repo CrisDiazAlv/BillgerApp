@@ -1,19 +1,25 @@
-import React, { useCallBack, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { ActivityIndicator, FlatList, StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
+
+import { AuthContext } from '../AuthContext'
 
 import { get } from '../api/verbs'
+
+import Bill from '../components/bill/Bill'
 
 export default function BillsByCategories({ account }) {
   const [isLoading, setLoading] = useState(true)
   const [bills, setBills] = useState([])
 
-  const navigation = useNavigation()
+  const { logOut } = useContext(AuthContext)
 
-  useEffect(() => {
-    getBills()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      getBills()
+    }, [])
+  )
 
   const getBills = async () => {
     try {
@@ -25,10 +31,19 @@ export default function BillsByCategories({ account }) {
       setLoading(false)
     } catch (error) {
       console.error(`Could not load bills: ${error}`)
+      if (error.message === '401') await logOut()
     }
   }
 
   if (isLoading) return <ActivityIndicator />
+
+  if (!bills.length) {
+    return (
+      <View style={styles.disclaimer}>
+        <Text>Todavía no hay ningún recibo en esta cuenta</Text>
+      </View>
+    )
+  }
 
   return (
     <FlatList
@@ -61,7 +76,7 @@ function CategorySummary(props) {
         </View>
         {isExpanded &&
           props.summary.bills.map(b => {
-            return <Text>hola</Text>
+            return <Bill key={b.id} {...b} />
           })}
       </View>
     </TouchableWithoutFeedback>
@@ -109,5 +124,11 @@ const styles = StyleSheet.create({
     width: 10,
     borderRadius: 15,
     backgroundColor: 'black',
+  },
+  disclaimer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 100,
   },
 })

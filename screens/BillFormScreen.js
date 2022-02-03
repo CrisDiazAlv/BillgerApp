@@ -1,5 +1,7 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useContext, useState } from 'react'
 import { ScrollView } from 'react-native'
+
+import { AuthContext } from '../AuthContext'
 
 import { post } from '../api/verbs'
 
@@ -18,6 +20,8 @@ export default function BillFormScreen({ navigation, route }) {
   const [category, setCategory] = useState('')
   const [error, setError] = useState('')
 
+  const { logOut } = useContext(AuthContext)
+
   const save = async () => {
     setError('')
     let hasErrors = false
@@ -30,11 +34,11 @@ export default function BillFormScreen({ navigation, route }) {
       const body = JSON.stringify({
         amount,
         date,
+        paid,
         description,
         notes,
+        category,
         account: route.params.account,
-        paid,
-        category: 3,
       })
       const response = await post('/bill', body)
       if (!response.ok) throw new Error(response.status)
@@ -42,8 +46,8 @@ export default function BillFormScreen({ navigation, route }) {
       navigation.goBack()
     } catch (error) {
       console.error(`Could not save category: ${error}`)
-      if (error.message === '401') navigation.navigate('Login')
       setError(`No se ha podido guardar el recibo: ${error}`)
+      if (error.message === '401') await logOut()
     }
   }
 

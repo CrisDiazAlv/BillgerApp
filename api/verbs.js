@@ -53,6 +53,16 @@ export const deleteById = async path => {
   return response
 }
 
+export const isLoggedIn = async () => {
+  const response = await fetch(`${API_URL}/user/me`, {
+    headers: new Headers({
+      credentials: 'include',
+    }),
+  })
+
+  return response
+}
+
 export const login = async (username, password) => {
   const credentials = btoa(username + ':' + password)
   await setCredentials(credentials)

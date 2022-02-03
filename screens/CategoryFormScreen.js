@@ -1,6 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useContext, useState } from 'react'
+
+import { AuthContext } from '../AuthContext'
 
 import { post } from '../api/verbs'
+
 import { Form, TextField, SubmitButton } from '../components/form'
 
 export default function CategoryFormScreen({ navigation }) {
@@ -11,6 +14,8 @@ export default function CategoryFormScreen({ navigation }) {
   const [color, setColor] = useState('')
   const [description, setDescription] = useState('')
   const [error, setError] = useState('')
+
+  const { logOut } = useContext(AuthContext)
 
   const save = async () => {
     setError('')
@@ -26,8 +31,8 @@ export default function CategoryFormScreen({ navigation }) {
       navigation.goBack()
     } catch (error) {
       console.error(`Could not save category: ${error}`)
-      if (error.message === '401') navigation.navigate('Login')
       setError(`No se ha podido guardar la categoría: ${error}`)
+      if (error.message === '401') await logOut()
     }
   }
 
@@ -40,6 +45,7 @@ export default function CategoryFormScreen({ navigation }) {
         required
         placeholder="#34af41, green, rgb(255,0,0)"
         value={color}
+        autoCapitalize="none"
         onChange={setColor}
       />
       <TextField name="Descripción" value={description} onChange={setDescription} />

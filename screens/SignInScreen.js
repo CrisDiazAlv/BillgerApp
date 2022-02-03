@@ -1,18 +1,22 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import { Text, StyleSheet } from 'react-native'
+
+import { AuthContext } from '../AuthContext'
 
 import { login } from '../api/verbs'
 
 import { Form, TextField, SubmitButton } from '../components/form'
 
-export default function LoginScreen({ navigation }) {
+export default function SignInScreen({ navigation }) {
   const usernameField = useRef()
   const [username, setUsername] = useState('')
   const passwordField = useRef()
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const logIn = async () => {
+  const { logIn } = useContext(AuthContext)
+
+  const signIn = async () => {
     setError('')
     let hasErrors = false
     if (!usernameField.current.validate()) hasErrors = true
@@ -23,7 +27,7 @@ export default function LoginScreen({ navigation }) {
       const response = await login(username, password)
       if (!response.ok) throw new Error(response.status)
 
-      navigation.navigate({ name: 'AccountSelector', params: { updateTime: new Date().toISOString() } })
+      await logIn()
     } catch (error) {
       console.error(error)
       if (error.message === '401') {
@@ -55,7 +59,7 @@ export default function LoginScreen({ navigation }) {
         onChange={setPassword}
       />
 
-      <SubmitButton title="Entrar" onPress={logIn} />
+      <SubmitButton title="Entrar" onPress={signIn} />
       <Text style={styles.signup} onPress={() => navigation.navigate('SignUp')}>
         ¿No tienes una cuenta? Regístrate
       </Text>

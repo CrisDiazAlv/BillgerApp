@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
+
+import { AuthContext } from '../../AuthContext'
 
 import { get } from '../../api/verbs'
 
@@ -9,11 +11,13 @@ export default function AccountInfo({ id }) {
   const [account, setAccount] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const navigation = useNavigation()
+  const { logOut } = useContext(AuthContext)
 
-  useEffect(() => {
-    getUserInfo()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      getUserInfo()
+    }, [])
+  )
 
   const getUserInfo = async () => {
     try {
@@ -25,7 +29,7 @@ export default function AccountInfo({ id }) {
       setIsLoading(false)
     } catch (error) {
       console.error(`Could not load account: ${error}`)
-      if (error.message === '401') navigation.navigate('Login')
+      if (error.message === '401') await logOut()
     }
   }
 

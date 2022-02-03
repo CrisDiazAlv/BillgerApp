@@ -1,15 +1,16 @@
-import React, { useState, useEffect, forwardRef } from 'react'
+import React, { useState, useContext, useEffect, forwardRef } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 import { Picker } from '@react-native-picker/picker'
-import { useNavigation } from '@react-navigation/native'
+
+import { AuthContext } from '../../AuthContext'
 
 import { get } from '../../api/verbs'
 
 function CategoryPicker(props, ref) {
   const [categories, setCategories] = useState([])
 
-  const navigation = useNavigation()
+  const { logOut } = useContext(AuthContext)
 
   useEffect(() => {
     getCategories()
@@ -24,15 +25,14 @@ function CategoryPicker(props, ref) {
       setCategories(data)
     } catch (error) {
       console.error(`Could not load categories: ${error}`)
-      if (error.message === '401') navigation.navigate('Login')
-      setHasError(true)
+      if (error.message === '401') await logOut()
     }
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{props.name}</Text>
-      <Picker selectedValue={props.value} onValueChange={({ itemValue }) => props.onChange(itemValue)}>
+      <Picker selectedValue={props.value} onValueChange={itemValue => props.onChange(itemValue)}>
         {categories.map(c => (
           <Picker.Item key={c.id} label={c.name} value={c.id} />
         ))}

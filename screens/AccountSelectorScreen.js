@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
+
+import { useFocusEffect } from '@react-navigation/native'
+
+import { AuthContext } from '../AuthContext'
 
 import { get, deleteById } from '../api/verbs'
 
@@ -7,15 +11,19 @@ import AddButton from '../components/account/AddButton'
 import AccountBox from '../components/account/AccountBox'
 import DeleteModal from '../components/account/DeleteModal'
 
-export default function AccountSelectorScreen({ navigation, route }) {
+export default function AccountSelectorScreen({ navigation }) {
   const [accounts, setAccounts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [modalVisible, setModalVisible] = useState(false)
   const [accountId, setAccountId] = useState()
 
-  useEffect(() => {
-    getAccounts()
-  }, [route.params?.updateTime])
+  const { logOut } = useContext(AuthContext)
+
+  useFocusEffect(
+    useCallback(() => {
+      getAccounts()
+    }, [])
+  )
 
   const getAccounts = async () => {
     try {
@@ -27,7 +35,7 @@ export default function AccountSelectorScreen({ navigation, route }) {
       setIsLoading(false)
     } catch (error) {
       console.error(`Could not load accounts: ${error}`)
-      if (error.message === '401') navigation.navigate('Login')
+      if (error.message === '401') await logOut()
     }
   }
 
@@ -39,7 +47,7 @@ export default function AccountSelectorScreen({ navigation, route }) {
       setAccounts(accounts.filter(a => a.id !== id))
     } catch (error) {
       console.error(`Could not delete account: ${error}`)
-      if (error.message === '401') navigation.navigate('Login')
+      if (error.message === '401') await logOut()
     } finally {
       setModalVisible(false)
     }

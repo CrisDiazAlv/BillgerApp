@@ -1,6 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useContext, useState } from 'react'
+
+import { AuthContext } from '../AuthContext'
 
 import { post } from '../api/verbs'
+
 import { Form, TextField, SubmitButton } from '../components/form'
 
 export default function AccountFormScreen({ navigation }) {
@@ -11,6 +14,8 @@ export default function AccountFormScreen({ navigation }) {
   const [initialBalance, setInitialBalance] = useState('')
   const [accountNumber, setAccountNumber] = useState('')
   const [error, setError] = useState('')
+
+  const { logOut } = useContext(AuthContext)
 
   const save = async () => {
     setError('')
@@ -27,8 +32,8 @@ export default function AccountFormScreen({ navigation }) {
       navigation.navigate({ name: 'AccountSelector', params: { updateTime: new Date().toISOString() } })
     } catch (error) {
       console.error(`Could not save account: ${error}`)
-      if (error.message === '401') navigation.navigate('Login')
       setError(`No se ha podido guardar la cuenta: ${error}`)
+      if (error.message === '401') await logOut()
     }
   }
 
