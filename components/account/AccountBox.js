@@ -1,24 +1,14 @@
 import React from 'react'
 import { Text, StyleSheet } from 'react-native'
 
-import RandomColoredBox from '../ui/RandomColoredBox'
+import ColoredBox from '../ui/ColoredBox'
 
 export default function AccountBox(props) {
-  const getRandomColor = () => {
-    const colors = ['#2b6777', '#5f2c3e', /*'#f2f2f2',*/ '#52ab98', /*'#f5cac2',*/ '#6db785', '#ef9273', '#de5499']
-    return colors[Math.floor(Math.random() * colors.length)]
-  }
-
-  const color = getRandomColor()
-
   return (
-    <RandomColoredBox
-      style={{ backgroundColor: color, ...props.style }}
-      onPress={props.onPress}
-      onLongPress={props.onLongPress}>
-      <Text style={styles.text}>{props.name}</Text>
-      <Text style={styles.text}>{props.currentBalance}€</Text>
-    </RandomColoredBox>
+    <ColoredBox style={props.style} color={props.account.color} onPress={props.onPress} onLongPress={props.onLongPress}>
+      <Text style={styles.text}>{props.account.name}</Text>
+      <Text style={styles.text}>{props.account.currentBalance}€</Text>
+    </ColoredBox>
   )
 }
 

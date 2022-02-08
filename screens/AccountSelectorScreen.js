@@ -7,7 +7,7 @@ import { AuthContext } from '../AuthContext'
 
 import { get, deleteById } from '../api/verbs'
 
-import AddButton from '../components/account/AddButton'
+import AddAccountButton from '../components/account/AddAccountButton'
 import AccountBox from '../components/account/AccountBox'
 import DeleteAccountModal from '../components/account/DeleteAccountModal'
 
@@ -59,23 +59,21 @@ export default function AccountSelectorScreen({ navigation }) {
     <ScrollView>
       <View style={styles.container}>
         {accounts.map(a => {
-          const { id, name, currentBalance } = a
           return (
             <AccountBox
-              key={id}
+              key={a.id}
               style={styles.box}
-              name={name}
-              currentBalance={currentBalance}
-              onPress={() => navigation.navigate('AccountOverview', { name, account: id })}
+              account={a}
+              onPress={() => navigation.navigate('AccountOverview', { name: a.name, account: a.id })}
               onLongPress={() => {
-                setAccountId(id)
+                setAccountId(a.id)
                 setModalVisible(true)
               }}
             />
           )
         })}
 
-        <AddButton onPress={() => navigation.navigate('AccountForm')} />
+        <AddAccountButton onPress={() => navigation.navigate('AccountForm')} />
         <DeleteAccountModal
           visible={modalVisible}
           onCancel={() => setModalVisible(false)}

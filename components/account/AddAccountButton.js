@@ -3,10 +3,10 @@ import { View, Text, StyleSheet } from 'react-native'
 
 import ColoredBox from '../ui/ColoredBox'
 
-export default function AddButton({ onPress }) {
+export default function AddAccountButton({ onPress }) {
   return (
-    <View style={styles.container}>
-      <ColoredBox style={styles.box} color="#3f5efb" onPress={onPress}>
+    <View style={styles.box}>
+      <ColoredBox style={styles.circle} color="#3f5efb" onPress={onPress}>
         <Text style={[styles.text, { fontSize: 48 }]}>+</Text>
       </ColoredBox>
     </View>
@@ -14,13 +14,13 @@ export default function AddButton({ onPress }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  box: {
     width: '40%',
     margin: '5%',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  box: {
+  circle: {
     width: 65,
     height: 65,
     borderRadius: 100,
