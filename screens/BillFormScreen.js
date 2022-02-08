@@ -62,6 +62,7 @@ export default function BillFormScreen({ navigation, route }) {
           name="Cantidad"
           placeholder="150, 20, -25"
           required
+          maxLength={12}
           keyboardType="numeric"
           numeric
           value={amount}
