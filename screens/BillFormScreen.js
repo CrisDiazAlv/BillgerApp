@@ -5,12 +5,14 @@ import { AuthContext } from '../AuthContext'
 
 import { post } from '../api/verbs'
 
-import { Form, TextField, DateTimeField, CategoryPicker, Checkbox, SubmitButton } from '../components/form'
+import CategoryPicker from '../components/category/CategoryPicker'
+import { Form, TextField, DateTimeField, Checkbox, SubmitButton } from '../components/form'
 
 export default function BillFormScreen({ navigation, route }) {
   const amountField = useRef()
   const dateField = useRef()
   const descriptionField = useRef()
+  const categoryField = useRef()
 
   const [amount, setAmount] = useState('')
   const [date, setDate] = useState('')
@@ -28,6 +30,7 @@ export default function BillFormScreen({ navigation, route }) {
     if (!amountField.current.validate()) hasErrors = true
     if (!dateField.current.validate()) hasErrors = true
     if (!descriptionField.current.validate()) hasErrors = true
+    if (!categoryField.current.validate()) hasErrors = true
     if (hasErrors) return
 
     try {
@@ -67,7 +70,7 @@ export default function BillFormScreen({ navigation, route }) {
         <DateTimeField ref={dateField} name="Fecha" required value={date} onChange={setDate} />
         <TextField ref={descriptionField} name="Concepto" required value={description} onChange={setDescription} />
         <TextField name="Notas" value={notes} onChange={setNotes} />
-        <CategoryPicker name="Categoria" value={category} onChange={setCategory} />
+        <CategoryPicker ref={categoryField} name="Categoria" required value={category} onChange={setCategory} />
         <Checkbox name="Pagado" value={paid} onChange={setPaid} />
         <SubmitButton title="Guardar" onPress={save} />
       </Form>
