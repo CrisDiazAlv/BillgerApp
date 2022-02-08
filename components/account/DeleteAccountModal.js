@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 
 import Modal from '../ui/Modal'
 
-export default function DeleteModal({ visible, onCancel, onConfirm }) {
+export default function DeleteAccountModal({ visible, onCancel, onConfirm }) {
   return (
     <Modal visible={visible} onConfirm={onConfirm} onCancel={onCancel}>
       <View style={styles.modalView}>

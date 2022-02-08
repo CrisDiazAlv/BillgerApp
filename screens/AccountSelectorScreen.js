@@ -9,7 +9,7 @@ import { get, deleteById } from '../api/verbs'
 
 import AddButton from '../components/account/AddButton'
 import AccountBox from '../components/account/AccountBox'
-import DeleteModal from '../components/account/DeleteModal'
+import DeleteAccountModal from '../components/account/DeleteAccountModal'
 
 export default function AccountSelectorScreen({ navigation }) {
   const [accounts, setAccounts] = useState([])
@@ -76,7 +76,7 @@ export default function AccountSelectorScreen({ navigation }) {
         })}
 
         <AddButton onPress={() => navigation.navigate('AccountForm')} />
-        <DeleteModal
+        <DeleteAccountModal
           visible={modalVisible}
           onCancel={() => setModalVisible(false)}
           onConfirm={() => deleteAccount(accountId)}
