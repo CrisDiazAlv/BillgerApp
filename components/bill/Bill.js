@@ -1,21 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, StyleSheet, ScrollView, Text, View, TouchableWithoutFeedback } from 'react-native'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 
 export default function Bill(props) {
   const parseDate = value => {
     if (!value) return
     const date = new Date(value)
-    return (
-      date.getDate() +
-      '/' +
-      (date.getMonth() + 1) +
-      '/' +
-      date.getFullYear() +
-      ' ' +
-      date.getHours() +
-      ':' +
-      date.getMinutes()
-    )
+    return date.toLocaleDateString('es')
   }
 
   return (

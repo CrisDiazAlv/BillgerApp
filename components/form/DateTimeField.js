@@ -29,7 +29,8 @@ function DateTimeField(props, ref) {
 
   const parseDate = value => {
     if (!value) return
-    return value.getDate() + '/' + (value.getMonth() + 1) + '/' + value.getFullYear()
+    const date = new Date(value)
+    return date.toLocaleDateString('es')
   }
 
   return (
