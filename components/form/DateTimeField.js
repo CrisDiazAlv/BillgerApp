@@ -41,16 +41,16 @@ function DateTimeField(props, ref) {
         {...props}
         placeholder={props.placeholder || props.name}
         value={parseDate(props.value)}
-        onFocus={() => setShow(true)}
-        onBlur={() => setShow(false)}
+        onPressIn={() => setShow(true)}
       />
       {show && (
         <DateTimePicker
-          {...props}
+          locale="es-ES"
           value={new Date()}
           onChange={(_, date) => {
-            props.onChange(date)
             setShow(false)
+            if (!date) return
+            props.onChange(date)
           }}
         />
       )}
