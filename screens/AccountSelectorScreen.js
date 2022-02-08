@@ -7,8 +7,8 @@ import { AuthContext } from '../AuthContext'
 
 import { get, deleteById } from '../api/verbs'
 
-import AddAccountButton from '../components/account/AddAccountButton'
 import AccountBox from '../components/account/AccountBox'
+import AddAccountButton from '../components/account/AddAccountButton'
 import DeleteAccountModal from '../components/account/DeleteAccountModal'
 
 export default function AccountSelectorScreen({ navigation }) {

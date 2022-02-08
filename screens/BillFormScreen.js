@@ -71,7 +71,7 @@ export default function BillFormScreen({ navigation, route }) {
         <DateTimeField ref={dateField} name="Fecha" required value={date} onChange={setDate} />
         <TextField ref={descriptionField} name="Concepto" required value={description} onChange={setDescription} />
         <TextField name="Notas" value={notes} onChange={setNotes} />
-        <CategoryPicker ref={categoryField} name="Categoria" required value={category} onChange={setCategory} />
+        <CategoryPicker ref={categoryField} name="Categoría" required value={category} onChange={setCategory} />
         <Checkbox name="Pagado" value={paid} onChange={setPaid} />
         <SubmitButton title="Guardar" onPress={save} />
       </Form>

@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: 'white',
     borderRadius: 10,
-    paddingVertical: 0,
     paddingHorizontal: 15,
     elevation: 5,
   },
