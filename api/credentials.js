@@ -7,15 +7,3 @@ export const setCredentials = async credentials => {
     console.error(error)
   }
 }
-
-export const getCredentials = async () => {
-  try {
-    const credentials = await AsyncStorage.getItem('@credentials')
-    if (credentials) {
-      return credentials
-    }
-  } catch (error) {
-    console.error(error)
-  }
-  return null
-}

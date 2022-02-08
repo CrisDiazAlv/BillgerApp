@@ -1,12 +1,9 @@
 import { encode as btoa } from 'base-64'
 
 import { API_URL } from './environment'
-import { setCredentials, getCredentials } from './credentials'
+import { setCredentials } from './credentials'
 
 export const get = async path => {
-  const credentials = await getCredentials()
-  if (!credentials) throw new Error('Credentials not found')
-
   const response = await fetch(`${API_URL}/${sanitizePath(path)}`, {
     headers: new Headers({
       credentials: 'include',
@@ -19,16 +16,12 @@ export const get = async path => {
 }
 
 export const post = async (path, body) => {
-  const headers = new Headers({
-    'Content-Type': 'application/json',
-  })
-
-  const credentials = await getCredentials()
-  if (credentials) headers.append('Authorization', `Basic ${credentials}`)
-
   const response = await fetch(`${API_URL}/${sanitizePath(path)}`, {
     method: 'POST',
-    headers,
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      credentials: 'include',
+    }),
     body,
   })
 
@@ -38,9 +31,6 @@ export const post = async (path, body) => {
 }
 
 export const deleteById = async path => {
-  const credentials = await getCredentials()
-  if (!credentials) throw new Error('Credentials not found')
-
   const response = await fetch(`${API_URL}/${sanitizePath(path)}`, {
     method: 'DELETE',
     headers: new Headers({
