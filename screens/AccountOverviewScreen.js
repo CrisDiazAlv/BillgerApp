@@ -7,7 +7,7 @@ import ActionButton from 'react-native-action-button'
 import { Ionicons } from '@expo/vector-icons'
 
 import AccountInfo from '../components/account/AccountInfo'
-import BillsByCategories from '../components/BillsByCategories'
+import BillsByCategories from '../components/bill/BillsByCategories'
 
 export default function AccountOverviewScreen({ navigation, route }) {
   // workaround to hide "Animated: useNativeDriver was not specified" warning

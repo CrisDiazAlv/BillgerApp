@@ -3,11 +3,11 @@ import { ActivityIndicator, FlatList, StyleSheet, Text, View, TouchableWithoutFe
 
 import { useFocusEffect } from '@react-navigation/native'
 
-import { AuthContext } from '../AuthContext'
+import { AuthContext } from '../../AuthContext'
 
-import { get } from '../api/verbs'
+import { get } from '../../api/verbs'
 
-import Bill from '../components/bill/Bill'
+import Bill from './Bill'
 
 export default function BillsByCategories({ account }) {
   const [isLoading, setLoading] = useState(true)
