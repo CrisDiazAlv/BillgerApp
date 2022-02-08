@@ -6,7 +6,7 @@ import ColoredBox from '../ui/ColoredBox'
 export default function AccountBox(props) {
   return (
     <ColoredBox style={props.style} color={props.account.color} onPress={props.onPress} onLongPress={props.onLongPress}>
-      <Text style={styles.text}>{props.account.name}</Text>
+      <Text style={[styles.text, { fontWeight: 'bold' }]}>{props.account.name}</Text>
       <Text style={styles.text}>{props.account.currentBalance}€</Text>
     </ColoredBox>
   )

@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   box: {
     width: '40%',
     margin: '5%',
-    paddingVertical: 50,
+    paddingVertical: 60,
     elevation: 5,
     borderRadius: 10,
   },
