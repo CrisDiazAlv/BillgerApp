@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import SignInScreen from './screens/SignInScreen'
 import SignUpScreen from './screens/SignUpScreen'
 import BillFormScreen from './screens/BillFormScreen'
+import BillDetailsScreen from './screens/BillDetailsScreen'
 import AccountFormScreen from './screens/AccountFormScreen'
 import CategoryFormScreen from './screens/CategoryFormScreen'
 import AccountSelectorScreen from './screens/AccountSelectorScreen'
@@ -72,6 +73,7 @@ export default function App() {
                 options={({ route }) => ({ title: route.params.name })}
               />
               <Screen name="BillForm" component={BillFormScreen} options={{ title: 'Nuevo recibo' }} />
+              <Screen name="BillDetails" component={BillDetailsScreen} options={{ title: 'Detalles del recibo' }} />
               <Screen name="CategoryForm" component={CategoryFormScreen} options={{ title: 'Nueva categoría' }} />
             </>
           )}
