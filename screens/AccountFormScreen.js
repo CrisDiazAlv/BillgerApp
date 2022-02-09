@@ -29,7 +29,7 @@ export default function AccountFormScreen({ navigation }) {
       const response = await post('/account', body)
       if (!response.ok) throw new Error(response.status)
 
-      navigation.navigate({ name: 'AccountSelector', params: { updateTime: new Date().toISOString() } })
+      navigation.navigate('AccountSelector')
     } catch (error) {
       console.error(`Could not save account: ${error}`)
       setError(`No se ha podido guardar la cuenta: ${error}`)

@@ -11,13 +11,13 @@ export default function DeleteAccountModal({ visible, onCancel, onConfirm }) {
         <View style={styles.buttons}>
           <TouchableWithoutFeedback onPress={onConfirm}>
             <View style={[styles.button, styles.confirm]}>
-              <Text style={styles.confirmation}>Confirmar</Text>
+              <Text style={styles.buttonText}>Confirmar</Text>
             </View>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={onCancel}>
             <View style={[styles.button, styles.cancel]}>
-              <Text style={styles.confirmation}>Cancelar</Text>
+              <Text style={styles.buttonText}>Cancelar</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -28,7 +28,6 @@ export default function DeleteAccountModal({ visible, onCancel, onConfirm }) {
 
 const styles = StyleSheet.create({
   modalView: {
-    // margin: 20,
     width: '80%',
     backgroundColor: 'white',
     borderRadius: 10,
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   cancel: {
     backgroundColor: '#ba0001',
   },
-  confirmation: {
+  buttonText: {
     color: 'white',
     fontSize: 14,
   },
