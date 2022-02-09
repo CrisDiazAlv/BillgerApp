@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect, useImperativeHandle, forwardRef } from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import React, { useState, useContext, useCallback, useImperativeHandle, forwardRef } from 'react'
+import { View, Text, TextInput, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 
 import { Picker } from '@react-native-picker/picker'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 
 import { AuthContext } from '../../AuthContext'
 
@@ -37,9 +38,11 @@ function CategoryPicker(props, ref) {
     return isValid
   }
 
-  useEffect(() => {
-    getCategories()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      getCategories()
+    }, [])
+  )
 
   const getCategories = async () => {
     try {
@@ -82,14 +85,34 @@ function CategoryPicker(props, ref) {
 }
 
 function CategoryPickerModal({ visible, value, categories, onCancel, onValueChange }) {
+  const navigation = useNavigation()
+
   return (
     <Modal visible={visible} onCancel={onCancel}>
       <View style={styles.modalView}>
-        <Picker mode="dropdown" selectedValue={value} onValueChange={value => onValueChange(value)}>
-          {categories.map(c => (
-            <Picker.Item key={c.id} label={c.name} value={c.id} />
-          ))}
-        </Picker>
+        {/* if categories is not empty, display a picker to choose from
+        otherwise, just inform the user and give him/her the ability to go to the category form */}
+        {categories && !!categories.length ? (
+          <Picker mode="dropdown" selectedValue={value} onValueChange={value => onValueChange(value)}>
+            {categories.map(c => (
+              <Picker.Item key={c.id} label={c.name} value={c.id} />
+            ))}
+          </Picker>
+        ) : (
+          <View style={styles.alertDialog}>
+            <Text style={[styles.dialogText, { fontSize: 24 }]}>⚠️</Text>
+            <Text style={styles.dialogText}>Todavía no has creado ninguna categoría, ¡ve a por ello!</Text>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                onCancel()
+                navigation.navigate('CategoryForm')
+              }}>
+              <View style={[styles.button, styles.confirm]}>
+                <Text style={styles.confirmation}>Confirmar</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        )}
       </View>
     </Modal>
   )
@@ -124,6 +147,31 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     elevation: 5,
+  },
+  alertDialog: {
+    marginVertical: 20,
+  },
+  dialogText: {
+    marginBottom: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  button: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    height: 40,
+    borderRadius: 100,
+    width: '45%',
+    elevation: 4,
+    paddingHorizontal: 20,
+  },
+  confirm: {
+    backgroundColor: '#3f5efb',
+  },
+  confirmation: {
+    color: 'white',
+    fontSize: 14,
   },
 })
 
