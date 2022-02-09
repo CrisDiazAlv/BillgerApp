@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle, forwardRef } from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { Platform, View, Text, TextInput, StyleSheet } from 'react-native'
 
 import DateTimePicker from '@react-native-community/datetimepicker'
 
@@ -30,32 +30,44 @@ function DateTimeField(props, ref) {
   const parseDate = value => {
     if (!value) return
     const date = new Date(value)
-    return date.toLocaleDateString('es')
+    return date.toLocaleDateString('es-ES')
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{props.name}</Text>
-      <TextInput
-        style={styles.input}
-        {...props}
-        placeholder={props.placeholder || props.name}
-        value={parseDate(props.value)}
-        onPressIn={() => setShow(true)}
-      />
-      {show && (
-        <DateTimePicker
-          locale="es-ES"
-          value={new Date()}
-          onChange={(_, date) => {
-            setShow(false)
-            if (!date) return
-            props.onChange(date)
-          }}
-        />
+      {Platform.OS === 'android' ? (
+        <>
+          <TextInput
+            style={styles.input}
+            {...props}
+            placeholder={props.placeholder || props.name}
+            value={parseDate(props.value)}
+            onPressIn={() => setShow(true)}
+          />
+          <DatePicker visible={show} value={props.value} setShow={setShow} onChange={props.onChange} />
+        </>
+      ) : (
+        <DatePicker visible={true} value={props.value} setShow={setShow} onChange={props.onChange} />
       )}
       <Text style={styles.error}>{errorMessage}</Text>
     </View>
+  )
+}
+
+function DatePicker(props) {
+  if (!props.visible) return null
+
+  return (
+    <DateTimePicker
+      locale="es-ES"
+      value={props.value && props.value instanceof Date ? props.value : new Date()}
+      onChange={(_, date) => {
+        props.setShow(false)
+        if (date === undefined) return
+        props.onChange(date)
+      }}
+    />
   )
 }
 

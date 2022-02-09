@@ -15,7 +15,7 @@ export default function BillFormScreen({ navigation, route }) {
   const categoryField = useRef()
 
   const [amount, setAmount] = useState('')
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(new Date())
   const [paid, setPaid] = useState(true)
   const [description, setDescription] = useState('')
   const [notes, setNotes] = useState('')
