@@ -4,6 +4,9 @@ import { ActivityIndicator } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
+import LogOutModal from './components/user/LogOutModal'
+import ProfileIcon from './components/user/ProfileIcon'
+
 import SignInScreen from './screens/SignInScreen'
 import SignUpScreen from './screens/SignUpScreen'
 import BillFormScreen from './screens/BillFormScreen'
@@ -20,6 +23,7 @@ import { isLoggedIn } from './api/verbs'
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
 
   const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -46,7 +50,7 @@ export default function App() {
         setIsSignedIn(true)
       },
       logOut: async () => {
-        setIsSignedIn(false)
+        setModalVisible(true)
       },
     }),
     []
@@ -65,20 +69,48 @@ export default function App() {
             </>
           ) : (
             <>
-              <Screen name="AccountSelector" component={AccountSelectorScreen} options={{ title: 'Mis cuentas' }} />
-              <Screen name="AccountForm" component={AccountFormScreen} options={{ title: 'Nueva cuenta' }} />
+              <Screen
+                name="AccountSelector"
+                component={AccountSelectorScreen}
+                options={{ title: 'Mis cuentas', headerRight: () => <ProfileIcon /> }}
+              />
+              <Screen
+                name="AccountForm"
+                component={AccountFormScreen}
+                options={{ title: 'Nueva cuenta', headerRight: () => <ProfileIcon /> }}
+              />
               <Screen
                 name="AccountOverview"
                 component={AccountOverviewScreen}
-                options={({ route }) => ({ title: route.params.name })}
+                options={({ route }) => ({ title: route.params.name, headerRight: () => <ProfileIcon /> })}
               />
-              <Screen name="BillForm" component={BillFormScreen} options={{ title: 'Nuevo recibo' }} />
-              <Screen name="BillDetails" component={BillDetailsScreen} options={{ title: 'Detalles del recibo' }} />
-              <Screen name="CategoryForm" component={CategoryFormScreen} options={{ title: 'Nueva categoría' }} />
+              <Screen
+                name="BillForm"
+                component={BillFormScreen}
+                options={{ title: 'Nuevo recibo', headerRight: () => <ProfileIcon /> }}
+              />
+              <Screen
+                name="BillDetails"
+                component={BillDetailsScreen}
+                options={{ title: 'Detalles del recibo', headerRight: () => <ProfileIcon /> }}
+              />
+              <Screen
+                name="CategoryForm"
+                component={CategoryFormScreen}
+                options={{ title: 'Nueva categoría', headerRight: () => <ProfileIcon /> }}
+              />
             </>
           )}
         </Navigator>
       </NavigationContainer>
+      <LogOutModal
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={() => {
+          setModalVisible(false)
+          setIsSignedIn(false)
+        }}
+      />
     </AuthContext.Provider>
   )
 }
