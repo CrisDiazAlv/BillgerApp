@@ -35,7 +35,7 @@ export default function BillFormScreen({ navigation, route }) {
 
     try {
       const body = JSON.stringify({
-        amount,
+        amount: parseFloat(amount),
         date,
         paid,
         description,
@@ -48,7 +48,7 @@ export default function BillFormScreen({ navigation, route }) {
 
       navigation.goBack()
     } catch (error) {
-      console.error(`Could not save category: ${error}`)
+      console.error(`Could not save bill: ${error}`)
       setError(`No se ha podido guardar el recibo: ${error}`)
       if (error.message === '401') await logOut()
     }
@@ -63,7 +63,7 @@ export default function BillFormScreen({ navigation, route }) {
           placeholder="150, 20, -25"
           required
           maxLength={12}
-          keyboardType="numeric"
+          keyboardType="numbers-and-punctuation"
           numeric
           value={amount}
           onChange={setAmount}

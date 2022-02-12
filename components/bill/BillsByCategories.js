@@ -85,10 +85,7 @@ function CategorySummary(props) {
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomColor: '#3f5efb',
-    borderBottomWidth: 1,
-    paddingVertical: 10,
-    marginVertical: 5,
+    marginTop: 20,
     marginHorizontal: 20,
   },
   row: {
